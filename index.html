@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Lab 01 SI</title>
+
+	<!-- Angular -->
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-route.js" ></script>
+	<link rel="stylesheet" type="text/css" href="style.css">
+
+	<script src="app.js"></script>
+	<script src="classes.js"></script>
+	<script src="controller.js"></script>
+</head>
+
+<body ng-app="app">	
+	<div id="tabs" ng-controller="tabController">
+		<button class="tab" id="artist-tab" ng-click="showArtist()">Artistas</button>
+		<button class="tab" id="song-tab"   ng-click="showSong()">Músicas</button>
+		<button class="tab" ng-click="showArtist()">Artistas</button>
+	</div>
+
+	<div class="card not-active" id="artist-card" ng-controller="artistController">
+		<h3>{{ title }}</h3>
+		<form ng-submit="submit()" ng-model="artist">
+			<p>Preencha as informações do artista:</p>
+
+			<label>Nome do artista: </br>
+				<textarea class="small-input" type="text" ng-model="artist.name" required></textarea>
+			</label></br>
+
+			<label>Informações do artista (opcional): </br>
+				<textarea class="small-input" type="text" ng-model="artist.info"></textarea>
+			</label></br>
+
+			<label>Link para imagem do artista (opcional): </br>
+				<textarea class="small-input" type="text" ng-model="artist.image"></textarea>
+			</label></br>
+
+			<input class="button" type="submit" value="Adicionar novo artista">
+			<p>{{message}}</p>
+		</form>
+
+		<div id="artist-list">
+		</div>
+	</div>
+
+	<div class="card not-active" id="song-card" ng-controller="songController">
+		<h3>{{ title }}</h3>
+		<form ng-submit="submit()" ng-model="song">
+			<p>Preencha as informações da música:</p>
+
+			<label>Nome da música: </br>
+				<textarea class="smaller-input" type="text" ng-model="song.name" required></textarea>
+			</label></br>
+
+			<label>Artista: </br>
+				<textarea class="smaller-input" type="text" ng-model="song.artist" required></textarea>
+			</label></br>
+
+			<label>Álbum: </br>
+				<textarea class="smaller-input" type="text" ng-model="song.album" required></textarea>
+			</label></br>
+
+			<label>Ano de lançamento: </br>
+				<textarea class="smaller-input" type="text" ng-model="song.year" required></textarea>
+			</label></br>
+
+			<label>Duração: </br>
+				<textarea class="smaller-input" type="text" ng-model="song.duration" required></textarea>
+			</label></br>
+
+			<input class="button" type="submit" value="Adicionar nova música">
+			<p>{{message}}</p>
+		</form>
+
+		<div id="song-list">
+		</div>
+	</div>
+</body>
+
+</html>
