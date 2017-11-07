@@ -17,7 +17,7 @@
 	<div id="tabs" ng-controller="tabController">
 		<button class="tab" id="artist-tab" ng-click="showArtist()">Artistas</button>
 		<button class="tab" id="song-tab"   ng-click="showSong()">Músicas</button>
-		<button class="tab" ng-click="showArtist()">Artistas</button>
+		<button class="tab" id="search-tab" ng-click="showSearch()">Pesquisar Artistas</button>
 	</div>
 
 	<div class="card not-active" id="artist-card" ng-controller="artistController">
@@ -41,7 +41,7 @@
 			<p>{{message}}</p>
 		</form>
 
-		<div id="artist-list">
+		<div class="artist-list" id="all-artists">
 		</div>
 	</div>
 
@@ -75,6 +75,20 @@
 		</form>
 
 		<div id="song-list">
+		</div>
+	</div>
+
+	<div class="card not-active" id="search-card" ng-controller="searchController">
+		<h3>{{ title }}</h3>
+		<form ng-submit="submit()">
+			<label>Pesquise artistas pelo nome:</br>
+				<textarea class="smaller-input" type="text" ng-model="search" required></textarea>
+			</label></br>
+			<input class="button" type="submit" value="Pesquisar">
+			<p>{{message}}</p>
+		</form>
+
+		<div class="artist-list" id="search-artists">
 		</div>
 	</div>
 </body>
