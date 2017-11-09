@@ -10,6 +10,9 @@
 
 	<script src="app.js"></script>
 	<script src="classes.js"></script>
+	<script src="services/artists.js"></script>
+	<script src="services/albums.js"></script>
+	<script src="services/songs.js"></script>
 	<script src="controller.js"></script>
 </head>
 
@@ -21,7 +24,7 @@
 	</div>
 
 	<div class="card not-active" id="artist-card" ng-controller="artistController">
-		<h3>{{ title }}</h3>
+		<h3>{{title}}</h3>
 		<form ng-submit="submit()" ng-model="artist">
 			<p>Preencha as informações do artista:</p>
 
@@ -42,11 +45,18 @@
 		</form>
 
 		<div class="artist-list" id="all-artists">
+			<div class="artist" ng-repeat="artist in getArtistList()">
+				<div class="name-info-wrapper">
+					<div class="name">{{artist.name}}</div>
+					<div class="info">{{artist.info}}</div>
+				</div>
+				<img class="img" src="{{artist.image}}" alt="{{artist.name}}"></div>
+			</div>
 		</div>
 	</div>
 
 	<div class="card not-active" id="song-card" ng-controller="songController">
-		<h3>{{ title }}</h3>
+		<h3>{{title}}</h3>
 		<form ng-submit="submit()" ng-model="song">
 			<p>Preencha as informações da música:</p>
 
@@ -75,6 +85,13 @@
 		</form>
 
 		<div id="song-list">
+			<div class="song" ng-repeat="song in getSongList()">
+				<div class="song-name">{{song.name}}</div>
+				<div class="song-artist">{{song.artist}}</div>
+				<div class="song-album">{{song.album}}</div>
+				<div class="song-year">{{song.year}}</div>
+				<div class="song-duration">{{song.duration}}</div>
+			</div>
 		</div>
 	</div>
 
@@ -89,6 +106,13 @@
 		</form>
 
 		<div class="artist-list" id="search-artists">
+			<div class="artist" ng-repeat="artist in getArtistList()">
+				<div class="name-info-wrapper">
+					<div class="name">{{artist.name}}</div>
+					<div class="info">{{artist.info}}</div>
+				</div>
+				<img class="img" src="{{artist.image}}" alt="{{artist.name}}"></div>
+			</div>
 		</div>
 	</div>
 </body>
