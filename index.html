@@ -6,7 +6,14 @@
 	<!-- Angular -->
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-route.js" ></script>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" />
 	<link rel="stylesheet" type="text/css" href="style.css">
+
+	<script src="https://code.jquery.com/jquery-latest.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"></script>
+
 
 	<script src="app.js"></script>
 	<script src="classes.js"></script>
@@ -44,15 +51,22 @@
 			<p>{{message}}</p>
 		</form>
 
-		<div class="artist-list" id="all-artists">
-			<div class="artist" ng-repeat="artist in getArtistList()">
-				<div class="name-info-wrapper">
-					<div class="name">{{artist.name}}</div>
-					<div class="info">{{artist.info}}</div>
+		<form>
+			<label> 
+				<input type="checkbox" ng-model="fav"/>
+				Apenas favoritos
+			</label><br>
+		</form>
+
+		<ul class="artist-list list-unstyled" id="all-artists">
+			<li class="media artist" ng-repeat="artist in getArtistList() | filter: fav ? {fav : true} : {}">
+				<img class="align-self-start mr-3 artist-img" src="{{artist.image}}" alt="{{artist.name}}">
+				<div class="media-body">
+					<h5 class="mt-0">{{artist.name}}</h5>
+					{{artist.info}}
 				</div>
-				<img class="img" src="{{artist.image}}" alt="{{artist.name}}"></div>
-			</div>
-		</div>
+			</li>
+		</ul>
 	</div>
 
 	<div class="card not-active" id="song-card" ng-controller="songController">
@@ -97,21 +111,86 @@
 
 	<div class="card not-active" id="search-card" ng-controller="searchController">
 		<h3>{{ title }}</h3>
-		<form ng-submit="submit()">
+		<form>
 			<label>Pesquise artistas pelo nome:</br>
 				<textarea class="smaller-input" type="text" ng-model="search" required></textarea>
 			</label></br>
-			<input class="button" type="submit" value="Pesquisar">
-			<p>{{message}}</p>
 		</form>
-
+		
 		<div class="artist-list" id="search-artists">
-			<div class="artist" ng-repeat="artist in getArtistList()">
-				<div class="name-info-wrapper">
-					<div class="name">{{artist.name}}</div>
-					<div class="info">{{artist.info}}</div>
+			<div class="artist-search" ng-repeat="artist in getArtistList() | filter: {name : search }">
+				<div data-toggle="modal" data-target="#displayArtist" ng-click="artistClick(artist.name)" class="name">{{artist.name}}</div>
+			</div>
+		</div>
+
+		<div class="modal fade" id="displayArtist" tabindex="-1" role="dialog" aria-labelledby="displayLabel" aria-hidden="true">
+			<div class="modal-dialog wider-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="displayLabel">{{getDisplay().name}}</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+
+						<div class="media">
+							<img class="align-self-start mr-3 artist-img" src="{{getDisplay().image}}" alt="{{getDisplay().name}}">
+							<div class="media-body">
+								<h5 class="mt-0">{{getDisplay().name}} <i ng-click="toggleFav(getDisplay().name)" class="{{getFav(getDisplay().name)}}" aria-hidden="true"></i></h5>
+								<p>{{getDisplay().info}}</p>
+							</div>
+						</div>
+
+
+						<div class="row">
+							<div class="col-md-6">
+								Lista de álbums:
+								<ul>
+									<li ng-repeat="album in albumsWithArtist(getDisplay().name)">{{album.name}}</li>
+								</ul>
+							</div>
+							<div class="col-md-6">
+
+								<form ng-submit="setRating(getDisplay().name, ratingForm)">
+									<div class="row">
+										<div class="col-md-12">
+											<label>Nota do artista:</label>
+										</div>	
+									</div>
+
+									<div class="row">
+										<div class="col-md-8">
+											<input type="text" ng-model="ratingForm" class="form-control display-input" placeholder="{{getRating(getDisplay().name)}}"/>
+										</div>
+										<div class="col-md-4">
+											<button class="btn btn-primary" type="submit">Modificar</button>
+										</div>
+									</div>	
+								</form>
+
+								<form ng-submit="setLastSong(getDisplay().name, lastSongForm)">
+									<div class="row">
+										<div class="col-md-12">
+											<label>Última música escutada:</label>
+										</div>	
+									</div>
+
+									<div class="row">
+										<div class="col-md-8">
+											<input type="text" ng-model="lastSongForm" class="form-control display-input" placeholder="{{getLastSong(getDisplay().name)}}"/>
+										</div>
+										<div class="col-md-4">
+											<button class="btn btn-primary" type="submit">Modificar</button>
+										</div>
+									</div>	
+								</form>
+
+							</div>
+						</div>
+
+					</div>
 				</div>
-				<img class="img" src="{{artist.image}}" alt="{{artist.name}}"></div>
 			</div>
 		</div>
 	</div>

@@ -3,6 +3,9 @@ class Artist {
 		this.name = name;
 		this.info = info;
 		this.image = image;
+		this.fav = false;
+		this.lastSong = "";
+		this.rating = "";
 	}
 }
 
@@ -21,5 +24,12 @@ class Song {
 		this.album = album;
 		this.year = year;
 		this.duration = duration;
+	}
+}
+
+class Playlist {
+	constructor(name) {
+		this.name = name;
+		this.songs = [];
 	}
 }

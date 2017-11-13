@@ -32,7 +32,7 @@ body {
 	background-color: #00f1f1;
 }
 
-.artist-list .artist {
+.artist-list .artist, .artist-list .artist-search {
 	min-height: 80px;
 
 	min-width: 520px;
@@ -41,6 +41,19 @@ body {
 	border: 1px solid black;
 	margin: 4px;
 	overflow:auto; 
+}
+
+.artist-list .artist-search {
+	min-height: 30px;
+}
+
+.artist-list .artist-search .name {
+	font-size: 20px;
+	padding: 10px 5px 10px 25px;
+}
+
+.artist-list .artist-search .name:hover {
+	cursor: pointer;
 }
 
 .artist-list .artist .name {
@@ -72,6 +85,11 @@ body {
 	max-width: 150px;
 }
 
+.artist-img {
+	max-height: 150px;
+	max-width: 150px;
+}
+
 .not-active {
 	display: none;
 }
@@ -82,7 +100,7 @@ body {
     background-color: #00ddf1;
     
     min-width: 540px;
-    max-width: 820px;
+    max-width: 800px;
 }
 
 .tab {
@@ -106,7 +124,7 @@ body {
 	line-height: 60px;
 	text-align: center;
 	border: 2px dashed #f69c55;
-	overflow: auto;
+	overflow: hidden;
 
 	min-width: 500px;
 
@@ -139,4 +157,8 @@ body {
 
 #song-list .song .song-duration {
 	width: 15%;
+}
+
+.wider-dialog {
+	max-width: 800px !important;
 }
