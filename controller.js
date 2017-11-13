@@ -137,6 +137,29 @@ app.controller('searchController', function($scope, artists, albums) {
 
 });
 
+app.controller('playlistController', function($scope, songs, playlists) {
+	$scope.title = "Criar e gerenciar playlists";
+	$scope.name = "";
+	$scope.message = "";
+
+	$scope.createPlaylist = function() {
+		var newPlaylist = new Playlist($scope.name);
+
+		if(repeatedName(newPlaylist.name, playlists.getPlaylists())) {
+			$scope.message = "Já existe uma playlist com o nome " + newPlaylist.name + ".";
+		} else {
+			playlists.pushPlaylist(newPlaylist);
+			$scope.name = "";
+			$scope.message = newPlaylist.name + " adicionado com sucesso.";
+		}
+		console.log($scope.message);
+	}
+
+	$scope.getPlaylists = function() {
+		return playlists.getPlaylists();
+	}
+});
+
 
 app.controller('tabController', ['$scope', function($scope) {
 	$scope.currentVisibleCard = "";
@@ -161,40 +184,14 @@ app.controller('tabController', ['$scope', function($scope) {
 		artistTab.className += " current-tab";
 	}
 
-	$scope.showArtist = function() {
-		if($scope.currentVisibleCard == "artist-card") {
+	$scope.show = function(tab) {
+		if($scope.currentVisibleCard == tab + "-card") {
 			$scope.hide();
 		} else {
 			$scope.currentVisibleCard && $scope.hide();
 
-			$scope.currentVisibleCard = "artist-card";
-			$scope.currentVisibleTab  = "artist-tab";
-
-			$scope.update();
-		}
-	}
-
-	$scope.showSong = function() {
-		if($scope.currentVisibleCard == "song-card") {
-			$scope.hide();
-		} else {
-			$scope.currentVisibleCard && $scope.hide();
-
-			$scope.currentVisibleCard = "song-card";
-			$scope.currentVisibleTab  = "song-tab";
-
-			$scope.update();
-		}
-	}
-
-	$scope.showSearch = function() {
-		if($scope.currentVisibleCard == "search-card") {
-			$scope.hide();
-		} else {
-			$scope.currentVisibleCard && $scope.hide();
-
-			$scope.currentVisibleCard = "search-card";
-			$scope.currentVisibleTab  = "search-tab";
+			$scope.currentVisibleCard = tab + "-card";
+			$scope.currentVisibleTab  = tab + "-tab";
 
 			$scope.update();
 		}

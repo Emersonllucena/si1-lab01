@@ -32,7 +32,7 @@ body {
 	background-color: #00f1f1;
 }
 
-.artist-list .artist, .artist-list .artist-search {
+.artist-list .artist, .artist-list .artist-search, .playlist-list {
 	min-height: 80px;
 
 	min-width: 520px;
@@ -43,16 +43,16 @@ body {
 	overflow:auto; 
 }
 
-.artist-list .artist-search {
+.artist-list .artist-search, .playlist-list{
 	min-height: 30px;
 }
 
-.artist-list .artist-search .name {
+.name {
 	font-size: 20px;
 	padding: 10px 5px 10px 25px;
 }
 
-.artist-list .artist-search .name:hover {
+.name:hover {
 	cursor: pointer;
 }
 

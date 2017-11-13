@@ -20,14 +20,16 @@
 	<script src="services/artists.js"></script>
 	<script src="services/albums.js"></script>
 	<script src="services/songs.js"></script>
+	<script src="services/playlists.js"></script>
 	<script src="controller.js"></script>
 </head>
 
 <body ng-app="app">	
 	<div id="tabs" ng-controller="tabController">
-		<button class="tab" id="artist-tab" ng-click="showArtist()">Artistas</button>
-		<button class="tab" id="song-tab"   ng-click="showSong()">Músicas</button>
-		<button class="tab" id="search-tab" ng-click="showSearch()">Pesquisar Artistas</button>
+		<button class="tab" id="artist-tab" ng-click="show('artist')">Artistas</button>
+		<button class="tab" id="song-tab"   ng-click="show('song')">Músicas</button>
+		<button class="tab" id="search-tab" ng-click="show('search')">Pesquisar Artistas</button>
+		<button class="tab" id="playlist-tab" ng-click="show('playlist')">Playlists</button>
 	</div>
 
 	<div class="card not-active" id="artist-card" ng-controller="artistController">
@@ -191,6 +193,23 @@
 
 					</div>
 				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="card not-active" id="playlist-card" ng-controller="playlistController">
+		<h3>{{title}}</h3>
+		<form ng-submit="createPlaylist()">
+			<label>Crie uma playlist:</br>
+				<textarea class="smaller-input" type="text" ng-model="name" required></textarea>
+			</label></br>
+			<input class="button" type="submit" value="Criar playlist"/>
+		</form>
+		<p>{{message}}</p>
+
+		<div>
+			<div class="playlist-list" ng-repeat="playlist in getPlaylists()">
+				<div data-toggle="modal" data-target="#displayArtist" ng-click="artistClick(artist.name)" class="name">{{playlist.name}}</div>
 			</div>
 		</div>
 	</div>
