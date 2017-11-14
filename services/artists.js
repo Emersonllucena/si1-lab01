@@ -23,7 +23,10 @@ app.factory("artists", function() {
 
 		toggleFav: function(name) {
 			for(var i = 0; i < artistList.length; i++) {
-				if(artistList[i].name == name) artistList[i].fav = !artistList[i].fav;
+				if(artistList[i].name == name)  {
+					if(artistList[i].fav == true && confirm("Tem certeza que deseja remover o artista dos favoritos?")) artistList[i].fav = !artistList[i].fav;
+					else artistList[i].fav = !artistList[i].fav
+				}
 			}
 		}, 
 		

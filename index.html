@@ -209,7 +209,35 @@
 
 		<div>
 			<div class="playlist-list" ng-repeat="playlist in getPlaylists()">
-				<div data-toggle="modal" data-target="#displayArtist" ng-click="artistClick(artist.name)" class="name">{{playlist.name}}</div>
+				<div data-toggle="modal" data-target="#playlistsModal" ng-click="playlistClick(playlist.name)" class="name">{{playlist.name}}</div>
+			</div>
+
+			<div class="modal fade" id="playlistsModal" tabindex="-1" role="dialog" aria-labelledby="playlistsModalLabel" aria-hidden="true">
+				<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="playlistsModalLabel">{{getDisplay().name}}</h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+							Músicas:
+							<ul>
+								<li ng-repeat="song in getDisplay().songs"><i class="fa fa-times close" ng-click="removeSong(getDisplay().name, song)" aria-hidden="true"></i> {{song}}</li>
+							</ul>
+							
+							<form class="row" ng-submit="addSong(getDisplay().name, newSongForm)">
+								<div class="col-md-8">
+									<input type="text" ng-model="newSongForm" class="form-control display-input" placeholder="Nova música"/>
+								</div>
+								<div class="col-md-4">
+									<button class="btn btn-primary" type="submit">Adicionar</button>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>

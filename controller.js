@@ -58,25 +58,27 @@ app.controller('songController', function($scope, songs, albums) {
 	}
 
 	$scope.submit = function() {
-		var newSong = new Song($scope.song.name, $scope.song.artist, $scope.song.album, $scope.song.year, $scope.song.duration);
-		var album;
+		if(confirm("Tem certeza que deseja adicionar essa música?")) {
+			var newSong = new Song($scope.song.name, $scope.song.artist, $scope.song.album, $scope.song.year, $scope.song.duration);
+			var album;
 
-		if(!repeatedName($scope.song.album, albums.getAlbumList())) {
-			album = new Album($scope.song.album, $scope.song.artist);
-			albums.pushAlbum(album);
-		} else {
-			album = findByName($scope.song.album, albums.getAlbumList());
-		}
+			if(!repeatedName($scope.song.album, albums.getAlbumList())) {
+				album = new Album($scope.song.album, $scope.song.artist);
+				albums.pushAlbum(album);
+			} else {
+				album = findByName($scope.song.album, albums.getAlbumList());
+			}
 
-		if(repeatedName($scope.song.name, album.songs)) {
-			$scope.message = "Já existe " + $scope.song.name +" no álbum " + $scope.song.album + ".";
-		} else {
-			songs.pushSong(newSong);
-			album.songs.push(newSong);
-			$scope.clearText();
-			$scope.message = newSong.name + " adicionada com sucesso.";
+			if(repeatedName($scope.song.name, album.songs)) {
+				$scope.message = "Já existe " + $scope.song.name +" no álbum " + $scope.song.album + ".";
+			} else {
+				songs.pushSong(newSong);
+				album.songs.push(newSong);
+				$scope.clearText();
+				$scope.message = newSong.name + " adicionada com sucesso.";
+			}
+			console.log($scope.message);
 		}
-		console.log($scope.message);
 	}
 
 	$scope.getSongList = function() {
@@ -141,6 +143,7 @@ app.controller('playlistController', function($scope, songs, playlists) {
 	$scope.title = "Criar e gerenciar playlists";
 	$scope.name = "";
 	$scope.message = "";
+	$scope.newSongForm = "";
 
 	$scope.createPlaylist = function() {
 		var newPlaylist = new Playlist($scope.name);
@@ -157,6 +160,24 @@ app.controller('playlistController', function($scope, songs, playlists) {
 
 	$scope.getPlaylists = function() {
 		return playlists.getPlaylists();
+	}
+
+	$scope.playlistClick = function(name) {
+		$scope.newSongForm = "";
+		playlists.addToDisplay(name);
+	}
+
+	$scope.getDisplay = function() {
+		return playlists.getDisplay();
+	}
+
+	$scope.addSong = function(playlistName, songName) {
+		$scope.newSongForm = "";
+		playlists.addSong(playlistName, songName);
+	}
+
+	$scope.removeSong = function(playlistName, songName) {
+		if(confirm("Tem certeza que deseja remover a música " + songName + "?")) playlists.removeSong(playlistName, songName);
 	}
 });
 
