@@ -1,10 +1,21 @@
-app.factory("artists", function() {
+app.factory("artists", function(loggedUser) {
 	var artistList = [];
 	var artistDisplay = null;
 
 	return {
 		getArtistList: function() {
 			return artistList;
+		},
+
+		updateArtistList: function() {
+			loggedUser.update().then(loggedUser.updateArtists).then(function() {
+				var temp = loggedUser.getArtists();
+				var tl = [];
+				for(var i = 0; i < temp.data.length; i++) {
+					tl.push(new Artist((temp.data)[i].name, (temp.data)[i].info, (temp.data)[i].url));
+				}
+				artistList = tl;
+			});
 		},
 
 		pushArtist: function(newArtist) {

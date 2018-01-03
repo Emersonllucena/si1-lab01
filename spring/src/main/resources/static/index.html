@@ -21,6 +21,7 @@
 	<script src="services/albums.js"></script>
 	<script src="services/songs.js"></script>
 	<script src="services/playlists.js"></script>
+	<script src="services/loggedUser.js"></script>
 	<script src="controller.js"></script>
 	<script src="controllers/artistController.js"></script>
 	<script src="controllers/songController.js"></script>
@@ -30,23 +31,58 @@
 </head>
 
 <body ng-app="app">	
-	<div id="tabs" ng-controller="tabController">
+	<div id="tabs" ng-controller="tabController" ng-init="log(false)">
 		<button class="tab" id="artist-tab" ng-click="show('artist')">Artistas</button>
-		<button class="tab" id="song-tab"   ng-click="show('song')">Músicas</button>
+		<button class="tab" id="song-tab"   ng-click="show('song')">Musicas</button>
 		<button class="tab" id="search-tab" ng-click="show('search')">Pesquisar Artistas</button>
 		<button class="tab" id="playlist-tab" ng-click="show('playlist')">Playlists</button>
+		<button class="tab" id="login-tab" data-toggle="modal" data-target="#loginModal">{{loginMsg}}</button>
+		<div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="loginmodal-container">
+						<h1>Fazer login</h1><br>
+					  	<form ng-submit="login(email, password)">
+							<input type="text" ng-model="email" name="email" placeholder="Email" required>
+							<input type="password" ng-model="password" placeholder="Senha" required>
+							<input type="submit" ng-model="login" class="login loginmodal-submit" value="Login">
+					 	 </form>
+										
+					  	<div class="login-help">
+							<a ng-click="abreRegistrar()">Registar usuario</a>
+			  			</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<button class="tab" id="registrar-tab" data-toggle="modal" data-target="#registrarModal">Registrar</button>
+		<div class="modal fade" id="registrarModal" tabindex="-1" role="dialog" aria-labelledby="registrarLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="loginmodal-container">
+						<h1>Registrar usuario</h1><br>
+					  	<form ng-submit="registrar(email, user, password)">
+					  		<input type="text" ng-model="email" name="email" placeholder="Email" required>	
+							<input type="text" ng-model="user" name="user" placeholder="Usuario" required>
+							<input type="password" ng-model="password" placeholder="Senha" required>
+							<input type="submit" ng-model="login" class="login loginmodal-submit" value="Registrar">
+					 	 </form>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 
 	<div class="card not-active" id="artist-card" ng-controller="artistController">
 		<h3>{{title}}</h3>
 		<form ng-submit="submit()" ng-model="artist">
-			<p>Preencha as informações do artista:</p>
+			<p>Preencha as informacoes do artista:</p>
 
 			<label>Nome do artista: </br>
 				<textarea class="small-input" type="text" ng-model="artist.name" required></textarea>
 			</label></br>
 
-			<label>Informações do artista (opcional): </br>
+			<label>Informacoes do artista (opcional): </br>
 				<textarea class="small-input" type="text" ng-model="artist.info"></textarea>
 			</label></br>
 
@@ -79,9 +115,9 @@
 	<div class="card not-active" id="song-card" ng-controller="songController">
 		<h3>{{title}}</h3>
 		<form ng-submit="submit()" ng-model="song">
-			<p>Preencha as informações da música:</p>
+			<p>Preencha as informacoes da musica:</p>
 
-			<label>Nome da música: </br>
+			<label>Nome da musica: </br>
 				<textarea class="smaller-input" type="text" ng-model="song.name" required></textarea>
 			</label></br>
 
@@ -89,19 +125,19 @@
 				<textarea class="smaller-input" type="text" ng-model="song.artist" required></textarea>
 			</label></br>
 
-			<label>Álbum: </br>
+			<label>album: </br>
 				<textarea class="smaller-input" type="text" ng-model="song.album" required></textarea>
 			</label></br>
 
-			<label>Ano de lançamento: </br>
+			<label>Ano de lancamento: </br>
 				<textarea class="smaller-input" type="text" ng-model="song.year" required></textarea>
 			</label></br>
 
-			<label>Duração: </br>
+			<label>Duracao: </br>
 				<textarea class="smaller-input" type="text" ng-model="song.duration" required></textarea>
 			</label></br>
 
-			<input class="button" type="submit" value="Adicionar nova música">
+			<input class="button" type="submit" value="Adicionar nova musica">
 			<p>{{message}}</p>
 		</form>
 
@@ -152,7 +188,7 @@
 
 						<div class="row">
 							<div class="col-md-6">
-								Lista de álbums:
+								Lista de albums:
 								<ul>
 									<li ng-repeat="album in albumsWithArtist(getDisplay().name)">{{album.name}}</li>
 								</ul>
@@ -179,7 +215,7 @@
 								<form ng-submit="setLastSong(getDisplay().name, lastSongForm)">
 									<div class="row">
 										<div class="col-md-12">
-											<label>Última música escutada:</label>
+											<label>ultima musica escutada:</label>
 										</div>	
 									</div>
 
@@ -227,14 +263,14 @@
 							</button>
 						</div>
 						<div class="modal-body">
-							Músicas:
+							Musicas:
 							<ul>
 								<li ng-repeat="song in getDisplay().songs"><i class="fa fa-times close" ng-click="removeSong(getDisplay().name, song)" aria-hidden="true"></i> {{song}}</li>
 							</ul>
 							
 							<form class="row" ng-submit="addSong(getDisplay().name, newSongForm)">
 								<div class="col-md-8">
-									<input type="text" ng-model="newSongForm" class="form-control display-input" placeholder="Nova música"/>
+									<input type="text" ng-model="newSongForm" class="form-control display-input" placeholder="Nova musica"/>
 								</div>
 								<div class="col-md-4">
 									<button class="btn btn-primary" type="submit">Adicionar</button>

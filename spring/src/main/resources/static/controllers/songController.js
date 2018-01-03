@@ -1,5 +1,5 @@
-app.controller('songController', function($scope, songs, albums) {
-	$scope.title = "Músicas";
+app.controller('songController', function($scope, songs, albums, loggedUser, $http) {
+	$scope.title = "Musicas";
 	$scope.message = '';
 
 	$scope.song = {
@@ -20,7 +20,7 @@ app.controller('songController', function($scope, songs, albums) {
 	}
 
 	$scope.submit = function() {
-		if(confirm("Tem certeza que deseja adicionar essa música?")) {
+		if(confirm("Tem certeza que deseja adicionar essa musica?")) {
 			var newSong = new Song($scope.song.name, $scope.song.artist, $scope.song.album, $scope.song.year, $scope.song.duration);
 			var album;
 
@@ -32,8 +32,28 @@ app.controller('songController', function($scope, songs, albums) {
 			}
 
 			if(repeatedName($scope.song.name, album.songs)) {
-				$scope.message = "Já existe " + $scope.song.name +" no álbum " + $scope.song.album + ".";
+				$scope.message = "Ja existe " + $scope.song.name +" no album " + $scope.song.album + ".";
 			} else {
+
+				const requestBody =  {
+					id_user: loggedUser.getId(),
+					name: $scope.song.name,
+					artist: $scope.song.artist,
+					album: $scope.song.album,
+					year: $scope.song.year,
+					duration: $scope.song.duration
+				};
+
+				$http.post("/song", requestBody).then(function suc(res) {
+					console.log("Registrado com sucesso");
+					console.log(requestBody);
+					console.log(res);
+
+				}, function err(res) {
+					console.log("Erro no /song");
+					console.log(res);
+				});
+
 				songs.pushSong(newSong);
 				album.songs.push(newSong);
 				$scope.clearText();
